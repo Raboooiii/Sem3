@@ -1,56 +1,61 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-int MergeSort(int arr[], int LB, int UB){
-    if(LB == UB){
-        return 0;
+void merge(int A[],int LB,int mid,int UB){
+    int n1 = mid - LB + 1;
+    int n2 = UB - mid;
+    int L[n1],R[n2];
+    for(int i=0;i<n1;i++){
+        L[i] = A[i+LB];
     }
-    int mid = (LB + UB)/2;
-    MergeSort(arr, LB, mid);
-    MergeSort(arr, mid+1, UB);
-    int i = LB;
-    int j = mid+1;
-    int k = 0;
-    int temp[UB-LB+1];
-    while(i <= mid && j <= UB){
-        if(arr[i] <= arr[j]){
-            temp[k] = arr[i];
+    for(int i=0;i<n1;i++){
+        R[i] = A[i+mid+1];
+    }
+    int i=0;
+    int j=0;
+    int k=LB;
+    while(i<n1 && j<n2){
+        if(L[i] <= R[j]){
+            A[k] = L[i];
             i++;
-            k++;
         }
         else{
-            temp[k] = arr[j];
+            A[k] = R[j];
             j++;
-            k++;
         }
+        k++;
     }
-    while(i <= mid){
-        temp[k] = arr[i];
+    while(i<n1){
+        A[k] = L[i];
         i++;
         k++;
     }
-    while(j <= UB){
-        temp[k] = arr[j];
+    while(j<n2){
+        A[k] = R[j];
         j++;
         k++;
     }
-    for(int i = 0; i < UB-LB+1; i++){
-        arr[i+LB] = temp[i];
+}
+
+void merge_sort(int A[],int LB,int UB){
+    if(LB < UB){
+        int mid = (LB + UB)/2;
+        merge_sort(A,LB,mid);
+        merge_sort(A,mid+1,UB);
+        merge(A,LB,mid,UB);
     }
 }
 
 int main(){
-    int arr[100],n;
-    cout<<"Enter the size of the array: ";
+    int n;
+    cout<<"Enter Number of Elements :";
     cin>>n;
-    cout<<"Enter the elements of the array: ";
-    for(int i = 0; i < n; i++){
-        cin>>arr[i];
-        }
-    MergeSort(arr, 0, n-1);
-    cout<<"Sorted array: ";
-    for(int i = 0; i < n; i++){
-        cout<<arr[i]<<" ";
-        }
+    int A[n];
+    cout<<"Enter Elements :";
+    for(int i=0;i<n;i++)
+        cin>>A[i];
+    merge_sort(A,0,n);
+    for(int i=0;i<n;i++)
+        cout<<A[i]<<" ";
     return 0;
 }
