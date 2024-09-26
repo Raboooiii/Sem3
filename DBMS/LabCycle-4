@@ -1,3 +1,19 @@
+2. Implementation of set operators, nested queries and Join queries and verify the relationship*
+Consider the schema for the Movie Database.
+
+ACTOR(Act_id, Act_Name, Act_Geander)
+DIRECTOR(Dir_id, Dir_Name, Dir_Phone)
+MOVIES(Mov_id, Mov_Title, Mov_Year, Mov_Lang, Dir_id)
+MOVIE_CAST(Act_id, Mov_id, Role)
+RATING(Mov_id, Rev_Stars)
+
+Write queries to:
+·       List the title of all movies directed by 'Hitch Cock'.
+·       Find the movie names where one or more actors acted in two or more movies.
+·       List all actors who acted in a movie before 2000 or in a movie after 2015 (use JOIN operation)
+·       Update rating of all movies directed by 'Steven Spielberg' to 5.
+·       Find the title of movies and number of stars for each movie that has atleast one rating and find the highest number of stars that movie received. Sort the result by movie title.
+
 mysql> create database Cinema;
 
 mysql> use Cinema;
