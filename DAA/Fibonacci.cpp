@@ -18,4 +18,5 @@ int main() {
     cin >> n;
     fibonacci(n);
     return 0;
+    cout << endl;
 }
