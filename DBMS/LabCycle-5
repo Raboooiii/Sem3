@@ -1,4 +1,4 @@
-1.     Implementation of Order By,Group By & Having clause & implementation of constraints *
+5.     Implementation of Order By,Group By & Having clause & implementation of constraints *
 
 Create two tables
 Depart(Department ID,Departmentname,managerid,loc)
