@@ -1,4 +1,4 @@
-2. Implementation of set operators, nested queries and Join queries and verify the relationship*
+6. Implementation of set operators, nested queries and Join queries and verify the relationship*
 Consider the schema for the Movie Database.
 
 ACTOR(Act_id, Act_Name, Act_Geander)
