@@ -1,72 +1,66 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
-struct Cell {
-    int cost;
-    string path; 
-};
+const int MAX_SIZE = 100;
 
-pair<int, string> minCostPath(int **cost, int m, int n) {
-    Cell dp[m + 1][n + 1];
-    dp[0][0] = {cost[0][0], "(0, 0)"};
+void minCostPath(int cost[MAX_SIZE][MAX_SIZE], int n, int m) {
+    int dp[MAX_SIZE][MAX_SIZE];
 
-    for (int i = 1; i <= m; i++) {
-        dp[i][0].cost = dp[i - 1][0].cost + cost[i][0];
-        dp[i][0].path = dp[i - 1][0].path + " -> (" + to_string(i) + ", 0)";
+    dp[0][0] = cost[0][0];
+
+    for (int i = 1; i < n; i++) {
+        dp[i][0] = dp[i - 1][0] + cost[i][0];
     }
 
-    for (int j = 1; j <= n; j++) {
-        dp[0][j].cost = dp[0][j - 1].cost + cost[0][j];
-        dp[0][j].path = dp[0][j - 1].path + " -> (0, " + to_string(j) + ")";
+    for (int j = 1; j < m; j++) {
+        dp[0][j] = dp[0][j - 1] + cost[0][j];
     }
 
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (dp[i - 1][j].cost <= dp[i][j - 1].cost && dp[i - 1][j].cost <= dp[i - 1][j - 1].cost) {
-                dp[i][j].cost = dp[i - 1][j].cost + cost[i][j];
-                dp[i][j].path = dp[i - 1][j].path + " -> (" + to_string(i) + ", " + to_string(j) + ")";
-            } else if (dp[i][j - 1].cost <= dp[i - 1][j].cost && dp[i][j - 1].cost <= dp[i - 1][j - 1].cost) {
-                dp[i][j].cost = dp[i][j - 1].cost + cost[i][j];
-                dp[i][j].path = dp[i][j - 1].path + " -> (" + to_string(i) + ", " + to_string(j) + ")";
-            } else {
-                dp[i][j].cost = dp[i - 1][j - 1].cost + cost[i][j];
-                dp[i][j].path = dp[i - 1][j - 1].path + " -> (" + to_string(i) + ", " + to_string(j) + ")";
-            }
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j < m; j++) {
+            int fromAbove = dp[i - 1][j];
+            int fromLeft = dp[i][j - 1];
+            int fromDiagonal = dp[i - 1][j - 1];
+            dp[i][j] = min(fromAbove, min(fromLeft, fromDiagonal)) + cost[i][j];
         }
     }
 
-    return {dp[m][n].cost, dp[m][n].path};
+    cout << "Minimum Cost: " << dp[n - 1][m - 1] << endl;
+
+  
+    cout << "Path: ";
+    int i = n - 1, j = m - 1;
+    while (i > 0 || j > 0) {
+        cout << "(" << i << ", " << j << ") ";
+        if (i == 0) {
+            j--; 
+        } else if (j == 0) {
+            i--; 
+        } else if (dp[i - 1][j] < dp[i][j - 1] && dp[i - 1][j] < dp[i - 1][j - 1]) {
+            i--; 
+        } else if (dp[i][j - 1] < dp[i - 1][j - 1]) {
+            j--; 
+        } else {
+            i--; j--; 
+        }
+    }
+    cout << "(0, 0)" << endl; 
 }
 
 int main() {
-    int m, n;
+    int n, m;
+    int cost[MAX_SIZE][MAX_SIZE];
 
-    cout << "Enter the number of rows: ";
-    cin >> m;
-    cout << "Enter the number of columns: ";
-    cin >> n;
+    cout << "Enter number of rows and columns: ";
+    cin >> n >> m;
 
-    int **cost = new int *[m];
-    for (int i = 0; i < m; i++)
-        cost[i] = new int[n];
-
-    cout << "Enter the cost matrix (" << m << "x" << n << "):\n";
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
+    cout << "Enter cost matrix:" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
             cin >> cost[i][j];
         }
     }
 
-    auto [minCost, path] = minCostPath(cost, m - 1, n - 1);
-
-    cout << "Minimum cost path: " << minCost << endl;
-    cout << "Path: " << path << endl;
-
-    for (int i = 0; i < m; i++)
-        delete[] cost[i];
-    delete[] cost;
-
+    minCostPath(cost, n, m);
     return 0;
 }
-
