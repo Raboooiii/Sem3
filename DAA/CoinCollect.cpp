@@ -1,47 +1,45 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-
 using namespace std;
 
-int coinCollect(vector <int>& coins, int amount){
-	const int INF = 10000;
-	vector <int> f(amount + 1, INF);
-	vector <int> usedCoin(amount + 1, -1);
-	f[0] = 0;
+void coin_collecting(int C[][100], int n, int m) {
+    int F[100][100] = {0}; 
+    F[0][0] = C[0][0];
+
+    for (int i = 1; i < n; i++) {
+        F[i][0] = F[i - 1][0] + C[i][0];
+    }
 	
-	for (int coin : coins){
-		for (int i = coin; i <= amount; i++){
-			if (f[i - coin] + 1 < f[i]) {
-                	f[i] = f[i - coin] + 1;
-                	usedCoin[i] = coin;
-            		}
-		}
-	}
-	cout << "Coins used to form the amount " << amount << ": ";
-    	int remainingAmount = amount;
-    	while (remainingAmount > 0) {
-        	int coin = usedCoin[remainingAmount];
-        	cout << coin << " ";
-        	remainingAmount -= coin;
-    	}
-    	cout << endl;
-	return f[amount];
+    for (int j = 1; j < m; j++) {
+        F[0][j] = F[0][j - 1] + C[0][j];
+    }
 	
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j < m; j++) {
+            F[i][j] = max(F[i - 1][j], F[i][j - 1]) + C[i][j];
+        }
+    }
+
+    cout << "Maximum coins collected: " << F[n - 1][m - 1] << endl;
 }
-int main(){
-	int n, amount;
-	cout<<"How many coins are there :";
-	cin>>n;
-	vector <int> coins(n);
-	cout<<"Enter the values of the coins :";
-	for(int i = 0; i<n;i++){
-		cin>>coins[i];
-	}
-	cout<<"What is the amount ? :";
-	cin>>amount;
-	
-	cout<<"The min no. of coins needed to get the amount is "<<coinCollect(coins, amount)<<endl;
-	
-	return 0;
+
+int main() {
+    int n, m;
+
+    cout << "Enter number of rows: ";
+    cin >> n;
+    cout << "Enter number of columns: ";
+    cin >> m;
+
+    int C[100][100]; 
+
+    cout << "Enter the coin values (matrix):\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> C[i][j]; 
+        }
+    }
+
+    coin_collecting(C, n, m);
+
+    return 0;
 }
