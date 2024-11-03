@@ -1,8 +1,6 @@
 #include<iostream>
 using namespace std;
 
-class heap {
-public:
     void swap(int A[], int a, int b) {
         int temp = A[a];
         A[a] = A[b];
@@ -38,7 +36,7 @@ public:
             Heapify(A, 0, i);  
         }
     }
-};
+
 
 void printArray(int arr[], int N) {
     for (int i = 0; i < N; ++i)
@@ -47,14 +45,25 @@ void printArray(int arr[], int N) {
 }
 
 int main() {
-    int arr[] = { 12, 11, 13, 5, 6, 7 };
-    int N = sizeof(arr) / sizeof(arr[0]);
+    int n;
+    cout<<"Enter the size of the array : ";
+    cin>>n;
+    int array[n];
+    cout<<"Enter the elements to the array : ";
+    for(int i=0; i<n; i++){
+        cin>>array[i];
+    }
+    cout << "Original array: ";
+    for (int i = 0; i<n; ++i) {
+        cout << array[i] << " ";
+    }
 
-    heap h; 
-    h.HeapHort(arr, N);
-
-    cout << "Sorted array is \n";
-    printArray(arr, N);
+    HeapSort(array, n);
+    
+    cout << "\nSorted array: ";
+    for (int i = 0; i < n; ++i) {
+        cout << array[i] << " ";
+    }
 
     return 0;
 }
