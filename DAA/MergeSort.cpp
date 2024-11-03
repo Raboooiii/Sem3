@@ -8,8 +8,8 @@ void merge(int A[],int LB,int mid,int UB){
     for(int i=0;i<n1;i++){
         L[i] = A[i+LB];
     }
-    for(int i=0;i<n1;i++){
-        R[i] = A[i+mid+1];
+    for(int j=0;j<n2;j++){
+        R[j] = A[j+mid+1];
     }
     int i=0;
     int j=0;
@@ -39,7 +39,7 @@ void merge(int A[],int LB,int mid,int UB){
 
 void merge_sort(int A[],int LB,int UB){
     if(LB < UB){
-        int mid = (LB + UB)/2;
+        int mid = LB + (UB - LB)/2;
         merge_sort(A,LB,mid);
         merge_sort(A,mid+1,UB);
         merge(A,LB,mid,UB);
@@ -54,7 +54,7 @@ int main(){
     cout<<"Enter Elements :";
     for(int i=0;i<n;i++)
         cin>>A[i];
-    merge_sort(A,0,n);
+    merge_sort(A,0,n-1);
     for(int i=0;i<n;i++)
         cout<<A[i]<<" ";
     return 0;
